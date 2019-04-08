@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Koinex Ticker</string>
+    <string name="pair">Pair</string>
+    <string name="last_price">Price</string>
+    <string name="highest_bid">Bid</string>
+    <string name="lowest_ask">Ask</string>
 </resources>
