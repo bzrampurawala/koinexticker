@@ -3,7 +3,7 @@ package com.example.koinexticker.service
 import com.example.koinexticker.model.InrTicker
 import com.squareup.moshi.*
 
-class TickerJsonAdapter: JsonAdapter<List<InrTicker>>() {
+class TickerJsonParser: JsonAdapter<List<InrTicker>>() {
     private val keys = JsonReader.Options.of("last_traded_price", "lowest_ask", "highest_bid")
     override fun toJson(writer: JsonWriter, value: List<InrTicker>?) {
         writer.beginArray()
@@ -22,7 +22,7 @@ class TickerJsonAdapter: JsonAdapter<List<InrTicker>>() {
         writer.endArray()
     }
 
-    @FromJson override fun fromJson(reader: JsonReader): List<InrTicker>? {
+    override fun fromJson(reader: JsonReader): List<InrTicker>? {
 
         val inrTicker = mutableListOf<InrTicker>()
         var lowestAsk = ""
