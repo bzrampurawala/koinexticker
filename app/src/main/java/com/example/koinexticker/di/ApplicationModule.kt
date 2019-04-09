@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.koinexticker.model.InrTickerDao
 import com.example.koinexticker.model.TickerDatabase
+import com.example.koinexticker.service.TickerService
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -21,4 +22,8 @@ class ApplicationModule{
     @Provides
     @Singleton
     fun providesInrTickerDao(tickerDatabase: TickerDatabase): InrTickerDao = tickerDatabase.inrTickerDao()
+
+    @Provides
+    @Singleton
+    fun providesTickerApiService(): TickerService = TickerService()
 }

@@ -2,6 +2,7 @@ package com.example.koinexticker.di
 
 import android.app.Application
 import android.content.Context
+import com.example.koinexticker.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun inject(koinexTicker: Application)
+    fun inject(mainActivity: MainActivity)
 
     @Component.Builder
     interface Builder {
