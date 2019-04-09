@@ -1,4 +1,4 @@
-package com.example.koinexticker.repository
+package com.example.koinexticker
 
 import com.example.koinexticker.model.InrTicker
 import com.example.koinexticker.model.InrTickerDao
@@ -6,7 +6,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import javax.inject.Inject
 
-class InrTickerRepository @Inject constructor(private val inrTickerDao: InrTickerDao) {
+class TickerRepository (private val inrTickerDao: InrTickerDao) {
 
     fun insertAll(tickerData: List<InrTicker>): Completable = Completable.create{ inrTickerDao.insertAll(tickerData) }
 

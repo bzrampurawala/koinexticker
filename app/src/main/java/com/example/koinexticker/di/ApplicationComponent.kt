@@ -2,6 +2,7 @@ package com.example.koinexticker.di
 
 import android.app.Application
 import android.content.Context
+import com.example.koinexticker.TickerRepository
 import com.example.koinexticker.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component

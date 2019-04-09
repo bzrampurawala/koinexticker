@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.koinexticker.KoinexTicker
 import com.example.koinexticker.R
 import com.example.koinexticker.model.InrTicker
+import com.example.koinexticker.TickerRepository
 import com.example.koinexticker.service.TickerJsonParser
 import com.example.koinexticker.service.TickerService
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var tickerService: TickerService
+
+    @Inject
+    lateinit var repository: TickerRepository
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -56,7 +60,14 @@ class MainActivity : AppCompatActivity() {
                 val stats = JSONObject(json["stats"].toString())
                 val inr = stats["inr"]
                 val ticker = jsonParser.fromJson(inr.toString())
-                Timber.i(ticker.toString())
+                if(ticker!=null) compositeDisposable.add(repository.insertAll(ticker)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+                    Timber.i("added in the db")
+                },{
+                    Timber.e(it)
+                }))
             },{
                 Timber.e(it)
             })
