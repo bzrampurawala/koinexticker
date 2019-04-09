@@ -14,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         ticker_recycler_view.adapter = adapter
         val jsonParser = TickerJsonParser()
         val tickerDataDisposable = tickerService.getTickerData()
+            .repeatWhen{it.delay(30, TimeUnit.SECONDS)}
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 val stats = JSONObject(json["stats"].toString())
                 val inr = stats["inr"]
                 val ticker = jsonParser.fromJson(inr.toString())
-
+                Timber.i(ticker.toString())
             },{
                 Timber.e(it)
             })
