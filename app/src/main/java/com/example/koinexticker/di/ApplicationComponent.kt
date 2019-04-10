@@ -3,6 +3,7 @@ package com.example.koinexticker.di
 import android.app.Application
 import android.content.Context
 import com.example.koinexticker.TickerRepository
+import com.example.koinexticker.ui.InrTickerViewModel
 import com.example.koinexticker.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
@@ -16,6 +17,7 @@ interface ApplicationComponent {
 
     fun inject(koinexTicker: Application)
     fun inject(mainActivity: MainActivity)
+    fun inject(viewModel: InrTickerViewModel)
 
     @Component.Builder
     interface Builder {

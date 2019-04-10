@@ -4,6 +4,7 @@ import com.example.koinexticker.model.InrTicker
 import com.example.koinexticker.model.InrTickerDao
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class TickerRepository (private val inrTickerDao: InrTickerDao) {
@@ -14,7 +15,7 @@ class TickerRepository (private val inrTickerDao: InrTickerDao) {
 
     fun delete(tickerData: InrTicker): Completable = Completable.create{ inrTickerDao.delete(tickerData) }
 
-    fun getAll(): Flowable<List<InrTicker>> = inrTickerDao.getAll()
+    fun getAll(): Observable<MutableList<InrTicker>> = inrTickerDao.getAll()
 
     fun getByCoin(coin: String): Flowable<InrTicker> = inrTickerDao.getByCoin(coin)
 

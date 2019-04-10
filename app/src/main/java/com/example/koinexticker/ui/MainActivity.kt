@@ -3,14 +3,13 @@ package com.example.koinexticker.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.*
 import com.example.koinexticker.KoinexTicker
 import com.example.koinexticker.R
 import com.example.koinexticker.model.InrTicker
-import com.example.koinexticker.TickerRepository
 import com.example.koinexticker.service.TickerJsonParser
 import com.example.koinexticker.service.TickerService
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -24,11 +23,10 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var tickerService: TickerService
+    private val inrTickerViewModel = InrTickerViewModel(InrTickerState(Uninitialized))
 
     @Inject
-    lateinit var repository: TickerRepository
+    lateinit var tickerService: TickerService
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -39,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         KoinexTicker.applicationComponent.inject(this)
         ticker_recycler_view.layoutManager = LinearLayoutManager(this)
         ticker_recycler_view.setHasFixedSize(true)
+
         val data = listOf(
             InrTicker(coin = "ETH",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
             InrTicker(coin = "BTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
@@ -50,6 +49,16 @@ class MainActivity : AppCompatActivity() {
             InrTicker(coin = "NEO",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
             InrTicker(coin = "BTT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432")
         )
+
+        withState(inrTickerViewModel){
+            Timber.i(when(it.inrTicker){
+                is Uninitialized -> mutableListOf()
+                is Loading -> mutableListOf()
+                is Success -> it.inrTicker()
+                is Fail -> mutableListOf()
+            }.toString())
+        }
+
         val adapter = TickerAdapter(data)
         ticker_recycler_view.adapter = adapter
         val jsonParser = TickerJsonParser()
@@ -64,15 +73,13 @@ class MainActivity : AppCompatActivity() {
                 ticker
             }
             .flatMap{
-                 Flowable.just(repository.insertAll(it))
+                 Flowable.just(inrTickerViewModel.insertAll(it))
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Timber.i("Got Data")
-            },{
-                Timber.e(it)
-            })
+                inrTickerViewModel.getAllData()
+            },{ Timber.e(it) })
 
         compositeDisposable.add(tickerDataDisposable)
 

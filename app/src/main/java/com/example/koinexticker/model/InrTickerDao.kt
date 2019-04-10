@@ -2,6 +2,7 @@ package com.example.koinexticker.model
 
 import androidx.room.*
 import io.reactivex.Flowable
+import io.reactivex.Observable
 
 @Dao
 interface InrTickerDao {
@@ -16,7 +17,7 @@ interface InrTickerDao {
     fun delete(inrTicker: InrTicker)
 
     @Query("SELECT * FROM inrTicker")
-    fun getAll(): Flowable<List<InrTicker>>
+    fun getAll(): Observable<MutableList<InrTicker>>
 
     @Query("SELECT * from inrTicker where coin like :coin")
     fun getByCoin(coin: String): Flowable<InrTicker>
