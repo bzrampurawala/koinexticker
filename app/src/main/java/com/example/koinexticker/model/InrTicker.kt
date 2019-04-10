@@ -11,5 +11,6 @@ data class InrTicker(
     @ColumnInfo(name = "highest_bid") val highestBid: String,
     @ColumnInfo(name = "lowest_ask") val lowestAsk: String,
     @ColumnInfo(name = "last_price") val lastPrice: String,
-    @ColumnInfo(name = "base_coin") val baseCoin: String = "INR"
+    @ColumnInfo(name = "base_coin") val baseCoin: String = "INR",
+    @ColumnInfo(name = "updated_time") val updatedTime: String
 )

@@ -2,7 +2,9 @@ package com.example.koinexticker.service
 
 import com.example.koinexticker.model.InrTicker
 import com.squareup.moshi.*
+import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -29,6 +31,6 @@ class TickerService {
 
 interface Ticker{
     @GET("api/ticker")
-    fun getTicker(): Observable<ResponseBody>
+    fun getTicker(): Flowable<ResponseBody>
 }
 

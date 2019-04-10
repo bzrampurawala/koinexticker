@@ -1,6 +1,7 @@
 package com.example.koinexticker.service
 
 import com.example.koinexticker.model.InrTicker
+import com.example.koinexticker.utils.Utils
 import com.squareup.moshi.*
 
 class TickerJsonParser: JsonAdapter<List<InrTicker>>() {
@@ -17,6 +18,8 @@ class TickerJsonParser: JsonAdapter<List<InrTicker>>() {
             writer.value(it.lowestAsk)
             writer.name("highest_bid")
             writer.value(it.highestBid)
+            writer.name("updated_timestamp")
+            writer.value(it.updatedTime)
             writer.endObject()
         }
         writer.endArray()
@@ -40,7 +43,12 @@ class TickerJsonParser: JsonAdapter<List<InrTicker>>() {
                     else -> reader.skipValue()
                 }
             }
-            val tickerData = InrTicker(coin = coin, highestBid = highestBid, lowestAsk = lowestAsk, lastPrice = lastPrice)
+            val tickerData = InrTicker(
+                coin = coin,
+                highestBid = highestBid,
+                lowestAsk = lowestAsk,
+                lastPrice = lastPrice,
+                updatedTime = Utils.getTimeStamp())
             inrTicker.add(tickerData)
             reader.endObject()
         }

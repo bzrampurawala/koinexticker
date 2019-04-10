@@ -9,6 +9,8 @@ import com.example.koinexticker.model.InrTicker
 import com.example.koinexticker.TickerRepository
 import com.example.koinexticker.service.TickerJsonParser
 import com.example.koinexticker.service.TickerService
+import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -38,36 +40,36 @@ class MainActivity : AppCompatActivity() {
         ticker_recycler_view.layoutManager = LinearLayoutManager(this)
         ticker_recycler_view.setHasFixedSize(true)
         val data = listOf(
-            InrTicker(coin = "ETH",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "BTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "XRP",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "LTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "TRX",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "0X",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "BAT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "NEO",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532"),
-            InrTicker(coin = "BTT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532")
+            InrTicker(coin = "ETH",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "BTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "XRP",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "LTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "TRX",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "0X",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "BAT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "NEO",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
+            InrTicker(coin = "BTT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432")
         )
         val adapter = TickerAdapter(data)
         ticker_recycler_view.adapter = adapter
         val jsonParser = TickerJsonParser()
         val tickerDataDisposable = tickerService.getTickerData()
             .repeatWhen{it.delay(30, TimeUnit.SECONDS)}
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({
+            .retryWhen { it.delay(90, TimeUnit.SECONDS) }
+            .map{
                 val json = JSONObject(it.string())
                 val stats = JSONObject(json["stats"].toString())
                 val inr = stats["inr"]
                 val ticker = jsonParser.fromJson(inr.toString())
-                if(ticker!=null) compositeDisposable.add(repository.insertAll(ticker)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe({
-                    Timber.i("added in the db")
-                },{
-                    Timber.e(it)
-                }))
+                ticker
+            }
+            .flatMap{
+                 Flowable.just(repository.insertAll(it))
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Timber.i("Got Data")
             },{
                 Timber.e(it)
             })

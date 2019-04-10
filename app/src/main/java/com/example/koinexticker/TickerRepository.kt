@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class TickerRepository (private val inrTickerDao: InrTickerDao) {
 
-    fun insertAll(tickerData: List<InrTicker>): Completable = Completable.create{ inrTickerDao.insertAll(tickerData) }
+    fun insertAll(tickerData: List<InrTicker>) = inrTickerDao.insertAll(tickerData)
 
     fun insert(tickerData: InrTicker): Completable = Completable.create{ inrTickerDao.insert(tickerData) }
 
