@@ -3,10 +3,10 @@ package com.example.koinexticker.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
+import com.airbnb.mvrx.MvRxState
 
 @Entity
-data class InrTicker(
+data class InrTicker (
     @PrimaryKey val coin: String,
     @ColumnInfo(name = "highest_bid") val highestBid: String,
     @ColumnInfo(name = "lowest_ask") val lowestAsk: String,
