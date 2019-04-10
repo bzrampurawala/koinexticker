@@ -17,7 +17,7 @@ interface InrTickerDao {
     fun delete(inrTicker: InrTicker)
 
     @Query("SELECT * FROM inrTicker")
-    fun getAll(): Observable<MutableList<InrTicker>>
+    fun getAll(): Observable<List<InrTicker>>
 
     @Query("SELECT * from inrTicker where coin like :coin")
     fun getByCoin(coin: String): Flowable<InrTicker>

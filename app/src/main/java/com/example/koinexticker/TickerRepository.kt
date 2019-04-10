@@ -15,7 +15,7 @@ class TickerRepository (private val inrTickerDao: InrTickerDao) {
 
     fun delete(tickerData: InrTicker): Completable = Completable.create{ inrTickerDao.delete(tickerData) }
 
-    fun getAll(): Observable<MutableList<InrTicker>> = inrTickerDao.getAll()
+    fun getAll(): Observable<List<InrTicker>> = inrTickerDao.getAll()
 
     fun getByCoin(coin: String): Flowable<InrTicker> = inrTickerDao.getByCoin(coin)
 

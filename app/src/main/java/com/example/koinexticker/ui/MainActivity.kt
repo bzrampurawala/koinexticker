@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity() {
 
         withState(inrTickerViewModel){
             Timber.i(when(it.inrTicker){
-                is Uninitialized -> mutableListOf()
-                is Loading -> mutableListOf()
+                is Uninitialized -> "Uninitlialized"
+                is Loading -> "Loading"
                 is Success -> it.inrTicker()
-                is Fail -> mutableListOf()
+                is Fail -> "Fail"
             }.toString())
         }
 
