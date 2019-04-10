@@ -1,5 +1,6 @@
 package com.example.koinexticker.ui
 
+import com.airbnb.mvrx.BaseMvRxViewModel
 import com.example.koinexticker.KoinexTicker
 import com.example.koinexticker.TickerRepository
 import com.example.koinexticker.model.InrTicker
@@ -8,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class InrTickerViewModel(initialState: InrTickerState) : BaseViewModel<InrTickerState>(initialState) {
+class InrTickerViewModel(initialState: InrTickerState) : BaseMvRxViewModel<InrTickerState>(initialState, debugMode = true){
     @Inject
     lateinit var repository: TickerRepository
 
