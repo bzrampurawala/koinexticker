@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.*
 import com.example.koinexticker.R
-import com.example.koinexticker.model.InrTicker
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.inr_ticker_fragment.*
 import timber.log.Timber
@@ -18,6 +17,8 @@ class InrTickerFragment: BaseMvRxFragment() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    private val adapter = TickerAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,35 +28,25 @@ class InrTickerFragment: BaseMvRxFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         ticker_recycler_view.layoutManager = LinearLayoutManager(view.context)
         ticker_recycler_view.setHasFixedSize(true)
+        ticker_recycler_view.adapter = adapter
 
-        val data = listOf(
-            InrTicker(coin = "ETH",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "BTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "XRP",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "LTC",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "TRX",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "0X",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "BAT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "NEO",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432"),
-            InrTicker(coin = "BTT",highestBid = "1234567", lowestAsk = "765432", lastPrice = "234532", updatedTime = "234t432")
-        )
         val tickerDisposable = inrTickerViewModel.getAllData()
         compositeDisposable.add(tickerDisposable)
-        val adapter = TickerAdapter(data)
-        ticker_recycler_view.adapter = adapter
-        super.onViewCreated(view, savedInstanceState)
+        Timber.d("Fragment created")
     }
 
     override fun invalidate() {
         withState(inrTickerViewModel){
-            Timber.i(when(it.inrTicker){
+            val data = when(it.inrTicker){
                 is Uninitialized -> listOf()
                 is Loading -> listOf()
                 is Success -> it.inrTicker.invoke()
                 is Fail -> listOf()
-            }.toString())
+            }
+            if(data.isNotEmpty()) adapter.submitList(data)
         }
 
     }

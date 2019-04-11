@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         KoinexTicker.applicationComponent.inject(this)
         val jsonParser = TickerJsonParser()
         val tickerDataDisposable = tickerService.getTickerData()
-            .repeatWhen{it.delay(30, TimeUnit.SECONDS)}
+            .repeatWhen{it.delay(10, TimeUnit.SECONDS)}
             .retryWhen { it.delay(90, TimeUnit.SECONDS) }
             .map{
                 val json = JSONObject(it.string())

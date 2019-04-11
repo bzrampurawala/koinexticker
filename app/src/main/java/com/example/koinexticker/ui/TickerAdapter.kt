@@ -3,15 +3,14 @@ package com.example.koinexticker.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.koinexticker.R
 import com.example.koinexticker.model.InrTicker
 
 import kotlinx.android.synthetic.main.ticker_row.view.*
 
-class TickerAdapter(private val inrTickerList: List<InrTicker>): RecyclerView.Adapter<TickerAdapter.TickerViewHolder>() {
-
-    override fun getItemCount() = inrTickerList.size
+class TickerAdapter: ListAdapter<InrTicker, TickerAdapter.TickerViewHolder>(TickerDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TickerViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,9 +19,10 @@ class TickerAdapter(private val inrTickerList: List<InrTicker>): RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: TickerViewHolder, position: Int) {
-        val tickerData = inrTickerList[position]
+        val tickerData = getItem(position)
         holder.bind(tickerData)
     }
+
 
     inner class TickerViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
@@ -38,6 +38,8 @@ class TickerAdapter(private val inrTickerList: List<InrTicker>): RecyclerView.Ad
             lowestAskTextView.text = tickerData.lowestAsk
             highestBidTextView.text = tickerData.highestBid
         }
+
     }
+
 
 }
