@@ -35,7 +35,6 @@ class InrTickerFragment: BaseMvRxFragment() {
 
         val tickerDisposable = inrTickerViewModel.getAllData()
         compositeDisposable.add(tickerDisposable)
-        Timber.d("Fragment created")
     }
 
     override fun invalidate() {

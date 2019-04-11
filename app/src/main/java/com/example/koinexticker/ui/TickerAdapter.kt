@@ -23,7 +23,6 @@ class TickerAdapter: ListAdapter<InrTicker, TickerAdapter.TickerViewHolder>(Tick
         holder.bind(tickerData)
     }
 
-
     inner class TickerViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
         private val pairTextView = view.pair_text_view
@@ -38,7 +37,6 @@ class TickerAdapter: ListAdapter<InrTicker, TickerAdapter.TickerViewHolder>(Tick
             lowestAskTextView.text = tickerData.lowestAsk
             highestBidTextView.text = tickerData.highestBid
         }
-
     }
 
 
