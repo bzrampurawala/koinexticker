@@ -10,9 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import okhttp3.OkHttpClient
 
-
-
-
 class TickerService {
     private val BASE_URL = "https://koinex.in"
     private val requestInterface: Ticker

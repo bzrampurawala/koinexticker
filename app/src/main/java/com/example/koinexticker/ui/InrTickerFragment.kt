@@ -9,7 +9,6 @@ import com.airbnb.mvrx.*
 import com.example.koinexticker.R
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.inr_ticker_fragment.*
-import timber.log.Timber
 
 class InrTickerFragment: BaseMvRxFragment() {
 

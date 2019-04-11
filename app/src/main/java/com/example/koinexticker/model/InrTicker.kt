@@ -3,7 +3,6 @@ package com.example.koinexticker.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.airbnb.mvrx.MvRxState
 
 @Entity
 data class InrTicker (

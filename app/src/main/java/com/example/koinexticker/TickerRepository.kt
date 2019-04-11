@@ -5,7 +5,6 @@ import com.example.koinexticker.model.InrTickerDao
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
-import javax.inject.Inject
 
 class TickerRepository (private val inrTickerDao: InrTickerDao) {
 
