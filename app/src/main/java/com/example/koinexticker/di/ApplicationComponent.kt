@@ -10,7 +10,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    modules = [(ApplicationModule::class)]
+    modules = [(ApplicationModule::class), (NetworkModule::class)]
 )
 @Singleton
 interface ApplicationComponent {

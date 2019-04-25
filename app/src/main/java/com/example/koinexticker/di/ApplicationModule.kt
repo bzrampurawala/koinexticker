@@ -27,8 +27,4 @@ class ApplicationModule{
     @Provides
     @Singleton
     fun providesTickerRepository(dao: InrTickerDao):TickerRepository = TickerRepository(dao)
-
-    @Provides
-    @Singleton
-    fun providesTickerApiService(): TickerService = TickerService()
 }

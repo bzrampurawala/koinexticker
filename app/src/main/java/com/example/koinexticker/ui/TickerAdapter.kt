@@ -1,5 +1,7 @@
 package com.example.koinexticker.ui
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +40,16 @@ class TickerAdapter: ListAdapter<InrTicker, TickerAdapter.TickerViewHolder>(Tick
             highestBidTextView.text = tickerData.highestBid
         }
     }
+    private fun playAnimation(view: View) {
+        val fadeOut = ObjectAnimator.ofFloat(view, "alpha", 1f, .3f)
+        fadeOut.duration = 400
 
+        val fadeIn = ObjectAnimator.ofFloat(view, "alpha", .3f, 1f)
+        fadeIn.duration = 400
+
+        val animatorSet = AnimatorSet()
+        animatorSet.play(fadeIn).after(fadeOut)
+        animatorSet.start()
+    }
 
 }
