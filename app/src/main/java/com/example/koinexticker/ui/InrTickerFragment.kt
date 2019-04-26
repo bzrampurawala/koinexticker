@@ -30,6 +30,7 @@ class InrTickerFragment: BaseMvRxFragment() {
         super.onViewCreated(view, savedInstanceState)
         ticker_recycler_view.layoutManager = LinearLayoutManager(view.context)
         ticker_recycler_view.setHasFixedSize(true)
+        ticker_recycler_view.itemAnimator!!.changeDuration = 3000
         ticker_recycler_view.adapter = adapter
 
         val tickerDisposable = inrTickerViewModel.getAllData()
